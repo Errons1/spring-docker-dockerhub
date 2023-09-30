@@ -3,7 +3,7 @@ name: Publish Docker image
 on:
   push:
     branches:
-      - main
+      - 
 
 jobs:
   push_to_registry:
@@ -19,7 +19,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws ecr get-login-password --region eu-west-1 | docker login --username ${{ secrets.AWS_ECR_DOCKER_USERNAME }} --password-stdin ${{ secrets.AWS_ECR_DOCKER_PASSWORD_STDIN }}
-          rev=$(git rev-parse --short HEAD)
           docker build . -t hello
-          docker tag hello ${{ secrets.AWS_ECR_DOCKER_PASSWORD_STDIN }}/${{ secrets.AWS_ECR_REPOSITORY_NAME }}:$rev
-          docker push ${{ secrets.AWS_ECR_DOCKER_PASSWORD_STDIN }}/${{ secrets.AWS_ECR_REPOSITORY_NAME }}:$rev
+          docker tag hello ${{ secrets.AWS_ECR_DOCKER_PASSWORD_STDIN }}/${{ secrets.AWS_ECR_REPOSITORY_NAME }}
+          docker push ${{ secrets.AWS_ECR_DOCKER_PASSWORD_STDIN }}/${{ secrets.AWS_ECR_REPOSITORY_NAME }}
